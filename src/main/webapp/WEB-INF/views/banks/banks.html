@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>BanksList</title>
+</head>
+<body>
+<h1>Banks list</h1>
+<div th:each="bank : ${banks}">
+    <a th:href="@{/banks/{name}(name=${bank.getName()})}" th:text="${bank.getName()}">user</a>
+</div>
+</body>
+</html>

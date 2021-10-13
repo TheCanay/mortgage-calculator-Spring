@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Bank info</title>
+</head>
+<body>
+<p>Банк: </p><p th:text="${bank.getName()}">VALUE</p>
+<p>Процентна ставка: </p><p th:text="${bank.getInterestRate()}">VALUE</p>
+<p>Максимальний кредит</p><p th:text="${bank.getMaximumLoan()}">VALUE</p>
+<p>Мінімальний внесок</p><p th:text="${bank.getMinimumDownPayment()}">VALUE</p>
+<p>Термін позики</p><p th:text="${bank.getLoanTermMonths()}">VALUE</p>
+</body>
+</html>
