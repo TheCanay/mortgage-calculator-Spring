@@ -1,13 +1,11 @@
 package edu.theCanay.webApp.Controllers;
 
 import edu.theCanay.webApp.DAO.BanksDAO;
+import edu.theCanay.webApp.Models.Bank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/banks")
@@ -38,12 +36,17 @@ public class BankController {
     }
 
     @GetMapping("/new")
-    public String newBank() {
-        return null;
+    public String newBank(Model model) {
+
+        model.addAttribute("bank", new Bank());
+
+        return "banks/bankCreation";
     }
 
-
-
-
+    @PostMapping
+    public String createBank(@ModelAttribute("bank") Bank bank) {
+        banksDAO.save(bank);
+        return "redirect:/banks";
+    }
 
 }

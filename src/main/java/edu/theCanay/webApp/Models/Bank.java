@@ -17,6 +17,8 @@ public class Bank {
         this.loanTermMonths = 48;
     }
 
+    public Bank() {}
+
 
     public String getName() {
         return name;

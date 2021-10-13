@@ -28,4 +28,9 @@ public class BanksDAO {
 
         return banks.stream().filter(bank -> bank.getName().equals(name)).findAny().orElse(null);
     }
+
+    public void save(Bank bank) {
+        banks.add(bank);
+    }
+
 }
