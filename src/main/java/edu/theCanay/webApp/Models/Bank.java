@@ -17,7 +17,9 @@ public class Bank {
         this.loanTermMonths = 48;
     }
 
-    public Bank() {}
+    public Bank() {
+        this.loanTermMonths = 48;
+    }
 
 
     public String getName() {

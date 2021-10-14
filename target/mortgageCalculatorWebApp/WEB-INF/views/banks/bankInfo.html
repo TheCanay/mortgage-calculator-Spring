@@ -5,10 +5,10 @@
     <title>Bank info</title>
 </head>
 <body>
-<p>Банк: </p><p th:text="${bank.getName()}">VALUE</p>
-<p>Процентна ставка: </p><p th:text="${bank.getInterestRate()}">VALUE</p>
-<p>Максимальний кредит</p><p th:text="${bank.getMaximumLoan()}">VALUE</p>
-<p>Мінімальний внесок</p><p th:text="${bank.getMinimumDownPayment()}">VALUE</p>
-<p>Термін позики</p><p th:text="${bank.getLoanTermMonths()}">VALUE</p>
+    <p>Bank name: </p><p th:text="${bank.getName()}">VALUE</p>
+    <p>Interest rate: </p><p th:text="${bank.getInterestRate()}">VALUE</p>
+    <p>Maximum loan: </p><p th:text="${bank.getMaximumLoan()}">VALUE</p>
+    <p>Minimum down payment: </p><p th:text="${bank.getMinimumDownPayment()}">VALUE</p>
+    <p>Loan term: </p><p th:text="${bank.getLoanTermMonths()}">VALUE</p>
 </body>
 </html>
