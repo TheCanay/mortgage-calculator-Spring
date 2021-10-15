@@ -49,4 +49,12 @@ public class BankController {
         return "redirect:/banks";
     }
 
+    @GetMapping("/{name}/edit")
+    public String editBank(@PathVariable("name") String name, Model model) {
+
+        model.addAttribute("bank", banksDAO.getBank(name));
+
+        return "banks/bankEdit";
+    }
+
 }
