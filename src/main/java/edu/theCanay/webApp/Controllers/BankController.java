@@ -5,7 +5,10 @@ import edu.theCanay.webApp.Models.Bank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/banks")
@@ -48,8 +51,16 @@ public class BankController {
     }
 
     //POST request controller for adding new person to a DB after /banks/new page was opened
+    //Valid annotation to comply with the validation rules described in Bank.java
     @PostMapping
-    public String createBank(@ModelAttribute("bank") Bank bank) {
+    public String createBank(@ModelAttribute("bank") @Valid Bank bank,
+                             BindingResult bindingResult) {
+
+        //if Bank failed validation return to the new bank creation page
+        if (bindingResult.hasErrors()) {
+            return "banks/bankCreation";
+        }
+
         banksDAO.save(bank);
         return "redirect:/banks";
     }
@@ -64,8 +75,16 @@ public class BankController {
     }
 
     //UPDATE (PATCH) request controller for updating bank data after /banks/{id}/edit page was opened
+    //Valid annotation to comply with the validation rules described in Bank.java
     @PatchMapping("/{id}")
-    public String updateBank(@ModelAttribute("bank") Bank bank, @PathVariable("id") int id) {
+    public String updateBank(@ModelAttribute("bank") @Valid Bank bank,
+                             BindingResult bindingResult,
+                             @PathVariable("id") int id) {
+
+        if (bindingResult.hasErrors()) {
+            return "banks/bankEdit";
+        }
+
         banksDAO.update(id, bank);
 
         return "redirect:/banks";

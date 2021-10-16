@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>New bank</title>
 </head>
 <body>
+
+    <h1>New bank creation</h1>
+
     <form th:method="POST" th:action="@{/banks}" th:object="${bank}">
         <label for="name">Enter name: </label>
         <input type="text" th:field="*{name}" id="name"/>
+        <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
         <br/>
         <label for="interestRate">Interest rate: </label>
         <input type="text" th:field="*{interestRate}" id="interestRate"/>
+        <div style="color: red" th:if="${#fields.hasErrors('interestRate')}" th:errors="*{interestRate}">interestRate error</div>
         <br/>
         <label for="maximumLoan">Maximum loan: </label>
         <input type="text" th:field="*{maximumLoan}" id="maximumLoan"/>
+        <div style="color: red" th:if="${#fields.hasErrors('maximumLoan')}" th:errors="*{maximumLoan}">maximumLoan error</div>
         <br/>
         <label for="minimumDownPayment">Minimum down payment: </label>
         <input type="text" th:field="*{minimumDownPayment}" id="minimumDownPayment"/>
+        <div style="color: red" th:if="${#fields.hasErrors('minimumDownPayment')}" th:errors="*{minimumDownPayment}">minimumDownPayment error</div>
         <br/>
         <input type="submit" value="Create!"/>
     </form>
