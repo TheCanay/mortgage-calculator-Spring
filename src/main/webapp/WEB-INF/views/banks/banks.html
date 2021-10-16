@@ -7,12 +7,19 @@
 <body>
 
 <form>
+    <hr/>
     <h1>New bank creation</h1>
     <input type="button" value="Create new bank!" onclick='location.href="/banks/new"'>
+    <hr/>
 </form>
-<h1>Banks list</h1>
+
+    <h1>Banks list</h1>
+
 <div th:each="bank : ${banks}">
-    <a th:href="@{/banks/{name}(name=${bank.getName()})}" th:text="${bank.getName()}">user</a>
+    <a th:href="@{/banks/{id}(id=${bank.getId()})}" th:text="${bank.getName()}">user</a>
 </div>
+
+    <hr/>
+
 </body>
 </html>

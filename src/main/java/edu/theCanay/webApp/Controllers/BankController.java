@@ -18,6 +18,8 @@ public class BankController {
         this.banksDAO = banksDAO;
     }
 
+
+    //Get request controller for showing main page of mortgage calculator
     @GetMapping()
     public String basePage(Model model) {
         //On this page, a user should be able to see the list
@@ -27,14 +29,16 @@ public class BankController {
         return "banks/banks";
     }
 
-    @GetMapping("/{name}")
-    public String bank(@PathVariable("name") String name, Model model) {
+    //Get request controller for showing page with detailed banks info
+    @GetMapping("/{id}")
+    public String bank(@PathVariable("id") int id, Model model) {
 
-        model.addAttribute("bank", banksDAO.getBank(name));
+        model.addAttribute("bank", banksDAO.getBank(id));
 
         return "banks/bankInfo";
     }
 
+    //Get request controller for showing page with new bank creation
     @GetMapping("/new")
     public String newBank(Model model) {
 
@@ -43,18 +47,35 @@ public class BankController {
         return "banks/bankCreation";
     }
 
+    //POST request controller for adding new person to a DB after /banks/new page was opened
     @PostMapping
     public String createBank(@ModelAttribute("bank") Bank bank) {
         banksDAO.save(bank);
         return "redirect:/banks";
     }
 
-    @GetMapping("/{name}/edit")
-    public String editBank(@PathVariable("name") String name, Model model) {
+    //Get request controller for showing bank editing page
+    @GetMapping("/{id}/edit")
+    public String editBank(@PathVariable("id") int id, Model model) {
 
-        model.addAttribute("bank", banksDAO.getBank(name));
+        model.addAttribute("bank", banksDAO.getBank(id));
 
         return "banks/bankEdit";
     }
 
+    //UPDATE (PATCH) request controller for updating bank data after /banks/{id}/edit page was opened
+    @PatchMapping("/{id}")
+    public String updateBank(@ModelAttribute("bank") Bank bank, @PathVariable("id") int id) {
+        banksDAO.update(id, bank);
+
+        return "redirect:/banks";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteBank(@PathVariable("id") int id) {
+
+        banksDAO.deleteBank(id);
+
+        return "redirect:/banks";
+    }
 }

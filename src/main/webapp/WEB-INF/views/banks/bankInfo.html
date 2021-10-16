@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <title>Bank info</title>
@@ -10,5 +10,19 @@
     <p>Maximum loan: </p><p th:text="${bank.getMaximumLoan()}">VALUE</p>
     <p>Minimum down payment: </p><p th:text="${bank.getMinimumDownPayment()}">VALUE</p>
     <p>Loan term: </p><p th:text="${bank.getLoanTermMonths()}">VALUE</p>
+
+    <br/>
+    <hr/>
+
+    <a th:href="@{/banks/{id}/edit(id=${bank.getId()})}">Edit bank</a>
+
+    <hr/>
+
+    <form th:method="DELETE" th:action="@{/banks/{id}(id=${bank.getId()})}">
+        <input type="submit" value="Delete bank">
+    </form>
+
+    <hr/>
+
 </body>
 </html>

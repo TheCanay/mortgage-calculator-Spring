@@ -2,14 +2,16 @@ package edu.theCanay.webApp.Models;
 
 public class Bank {
 
+    private int id;
     private String name;
     private int interestRate;
     private int maximumLoan;
     private int minimumDownPayment;
     private int loanTermMonths;
 
-    public Bank(String name, int interestRate, int maximumLoan, int minimumDownPayment) {
+    public Bank(int id, String name, int interestRate, int maximumLoan, int minimumDownPayment) {
         //Name, interest Rate, maximum Loan, minimum Down Payment
+        this.id = id;
         this.name = name;
         this.interestRate = interestRate;
         this.maximumLoan = maximumLoan;
@@ -21,6 +23,13 @@ public class Bank {
         this.loanTermMonths = 48;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
