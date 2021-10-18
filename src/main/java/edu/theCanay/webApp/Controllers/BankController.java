@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import edu.theCanay.webApp.Services.mortgageCalculatorService;
 
 import javax.validation.Valid;
 
@@ -29,7 +30,7 @@ public class BankController {
         //of all earlier created banks and create/edit/remove the bank
         model.addAttribute("banks", banksDAO.getBanks());
 
-        return "banks/banks";
+        return "banks/banksList";
     }
 
     //Get request controller for showing page with detailed banks info
@@ -90,11 +91,53 @@ public class BankController {
         return "redirect:/banks";
     }
 
+    //DELETE request handler for deleting chosen bank from model
     @DeleteMapping("/{id}")
     public String deleteBank(@PathVariable("id") int id) {
 
         banksDAO.deleteBank(id);
 
         return "redirect:/banks";
+    }
+
+    @GetMapping("/mortgageCalculator")
+    public String mortgageCalculator(Model model) {
+
+        model.addAttribute("banks", banksDAO.getBanks());
+
+        return "banks/mortgageCalculator";
+    }
+
+    @PostMapping("/mortgageCalculator")
+    public String mortgageCalculatorResult(@RequestParam("selectedBankId") Integer selectedBankId,
+                                           @RequestParam("initLoan") Integer initLoan,
+                                           @RequestParam("downPayment") Integer downPayment,
+                                           Model model) {
+
+        String calculationResult;
+
+        boolean isError;
+
+        if (mortgageCalculatorService.isValuesValid(initLoan, downPayment, banksDAO.getBank(selectedBankId))) {
+            double mortgageMonthlyPayment = mortgageCalculatorService.calculateMonthlyMortgagePayment(initLoan,
+                    banksDAO.getBank(selectedBankId));
+
+            calculationResult = "The monthly payment in the bank " + banksDAO.getBank(selectedBankId).getName() +
+                    " on the loan in the amount of " + initLoan + " is: " + String.format("%.2f", mortgageMonthlyPayment);
+
+            isError = false;
+
+        } else {
+            isError = true;
+
+            calculationResult = "Check the information on your maximum loan amount and monthly payment at the selected bank";
+        }
+
+        model.addAttribute("banks", banksDAO.getBanks());
+        model.addAttribute("isError", isError);
+        model.addAttribute("selectedBank", banksDAO.getBank(selectedBankId));
+        model.addAttribute("calculationResult", calculationResult);
+
+        return "banks/mortgageCalculator";
     }
 }

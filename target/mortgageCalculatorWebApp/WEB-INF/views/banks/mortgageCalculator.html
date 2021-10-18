@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mortgage calculator</title>
+</head>
+<body>
+
+    <form method="post" th:action="@{/banks/mortgageCalculator}">
+
+        <label for="initLoan">Enter initial loan: </label>
+        <input type="text" id="initLoan" name="initLoan">
+        <br/>
+        <br/>
+
+        <label for="downPayment">Enter your down payment: </label>
+        <input type="text" id="downPayment" name="downPayment">
+        <br/>
+        <br/>
+
+        Choose a bank for yours mortgage calculation
+        <select id="selectedBankId" class="selectedBankId" name="selectedBankId">
+            <!--<option value="">Select bank</option>-->
+            <option th:each="bank : ${banks}"
+                    th:value="${bank.getId()}"
+                    th:text="${bank.getName()}">
+            </option>
+        </select>
+
+        <input type="submit" value="Calculate">
+    </form>
+
+    <hr/>
+
+    <p th:text="${calculationResult}">VALUE</p>
+
+    <form th:if="${isError}">
+        <a th:href="@{/banks/{id}(id=${selectedBank.getId()})}" th:target="_blank">Bank info</a>
+    </form>
+
+    <form method="get" action="/banks">
+        <br/>
+        <hr/>
+        <input type="submit" value="Back to main page">
+        <br/>
+        <hr/>
+    </form>
+
+</body>
+</html>
