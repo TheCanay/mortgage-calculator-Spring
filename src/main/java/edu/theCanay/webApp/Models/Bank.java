@@ -25,6 +25,11 @@ public class Bank {
 
     private int loanTermMonths;
 
+    public void setLoanTermMonths(int loanTermMonths) {
+        this.loanTermMonths = loanTermMonths;
+    }
+
+
     public Bank(int id, String name, int interestRate, int maximumLoan, int minimumDownPayment) {
         //Name, interest Rate, maximum Loan, minimum Down Payment
         this.id = id;

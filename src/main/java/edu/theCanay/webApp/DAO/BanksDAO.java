@@ -1,52 +1,59 @@
 package edu.theCanay.webApp.DAO;
 
 import edu.theCanay.webApp.Models.Bank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class BanksDAO {
 
-    private static int BANK_COUNTER;
+    private final JdbcTemplate jdbcTemplate;
 
-    private final List<Bank> banks = new ArrayList<>();
-
-    {
-        banks.add(new Bank(++BANK_COUNTER, "PrivatBank", 7, 300000, 60000));
-        banks.add(new Bank(++BANK_COUNTER, "OschadBank", 10, 250000, 60000));
-        banks.add(new Bank(++BANK_COUNTER, "AlfaBank", 9, 350000, 55000));
-        banks.add(new Bank(++BANK_COUNTER, "Universal", 8, 300000, 60000));
-        banks.add(new Bank(++BANK_COUNTER, "MonoBank", 8, 200000, 30000));
+    @Autowired
+    public BanksDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Bank> getBanks() {
-        return banks;
+        //With the usage of query method and BankMapper class gets list of banks
+        return jdbcTemplate.query("SELECT * FROM Bank", new BeanPropertyRowMapper<>(Bank.class));
     }
 
     public Bank getBank(int id) {
-
-        return banks.stream().filter(bank -> bank.getId() == id).findAny().orElse(null);
-        //return banks.stream().filter(bank -> bank.getName().equals(name)).findAny().orElse(null);
+        //return the bank with the specified id or null
+        return jdbcTemplate.query("SELECT * FROM Bank WHERE Id =?", new Object[] {id},
+                new BeanPropertyRowMapper<>(Bank.class)).stream().findAny().orElse(null);
     }
 
     public void save(Bank bank) {
-        bank.setId(++BANK_COUNTER);
-        banks.add(bank);
+
+        jdbcTemplate.update("INSERT INTO Bank (\"name\", \"interestRate\", \"maximumLoan\", \"minimumDownPayment\", \"loanTermMonths\") VALUES (?, ?, ?, ?, ?);",
+                bank.getName(),
+                bank.getInterestRate(),
+                bank.getMaximumLoan(),
+                bank.getMinimumDownPayment(),
+                bank.getLoanTermMonths());
+
     }
 
     public void update(int id, Bank updatedBank) {
-        Bank bankToBeUpdated = getBank(id);
-
-        bankToBeUpdated.setName(updatedBank.getName());
-        bankToBeUpdated.setInterestRate(updatedBank.getInterestRate());
-        bankToBeUpdated.setMaximumLoan(updatedBank.getMaximumLoan());
-        bankToBeUpdated.setMinimumDownPayment(updatedBank.getMinimumDownPayment());
+        jdbcTemplate.update("UPDATE Bank SET name=?, interestrate=?, maximumloan=?, minimumdownpayment=?, loantermmonths=? WHERE id=?",
+                updatedBank.getName(),
+                updatedBank.getInterestRate(),
+                updatedBank.getMaximumLoan(),
+                updatedBank.getMinimumDownPayment(),
+                updatedBank.getLoanTermMonths(),
+                id);
     }
 
     public void deleteBank(int id) {
-        banks.removeIf(bank -> bank.getId() == id);
+
+        jdbcTemplate.update("DELETE FROM Bank WHERE id=?", id);
+
     }
 
 }
